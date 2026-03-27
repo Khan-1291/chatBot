@@ -1,0 +1,37 @@
+# ============================================
+# Render.com Deployment Configuration
+# Free Tier: 0.5GB RAM, 0.1 CPU, sleeps after 15 mins
+# ============================================
+
+services:
+  - type: web
+    name: pakistani-whatsapp-bot
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: SUPABASE_URL
+        sync: false  # Set in Render dashboard
+      - key: SUPABASE_ANON_KEY
+        sync: false  # Set in Render dashboard
+      - key: OPENROUTER_API_KEY
+        sync: false  # Set in Render dashboard
+      - key: GEMINI_API_KEY
+        sync: false  # Optional - Set in Render dashboard
+      - key: AI_PROVIDER
+        value: openrouter
+      - key: OPENROUTER_MODEL
+        value: meta-llama/llama-3.3-70b-instruct
+      - key: MAX_AI_CALLS_PER_DAY
+        value: 50
+      - key: LOG_LEVEL
+        value: info
+    healthCheckPath: /
+    autoDeploy: true
+    # Note: Free tier sleeps after 15 minutes of inactivity
+    # It will wake up on the next request (may take 30-60 seconds)
